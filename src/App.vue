@@ -1,50 +1,67 @@
 <script setup>
-import { items } from "./movies.json";
-/*
- This is an Icon that you can use to represent the stars if you like
- otherwise you could just use a simple ⭐️ emoji, or * character.
-*/
+import { ref } from "vue";
 import { StarIcon } from "@heroicons/vue/24/solid";
+import { items } from "./movies.json";
+const movies = ref(items);
+
+function ratingUpdate(movieIndex, star){
+  movies.value[movieIndex].rating = star;
+}
+
 </script>
 
 <template>
-  <!-- This is where your template goes	-->
-  <div class="h-full flex items-center">
-    <ul class="flex items-center w-4/5 mx-auto">
-      <li v-for="item in items" v-bind:key="item.id" 
-          class="flex justify-items-center items-center w-1/3 px-2 rounded-2xl overflow-hidden">
-        <div class="h-full flex flex-col">
-          <div class="h-[520px]">
-            <img :src="item.image" :alt="item.name" class="h-full w-full">
+  <div class="app">
+    <div class="movie-list">
+      <div class="movie-item" v-for="(movie, movieIndex) in movies" :key="movie.id">
+        <div class="movie-item-image-wrapper">
+          <img :src="movie.image" class="movie-item-image" alt="" />
+        </div>
+
+        <div class="movie-item-content-wrapper">
+          <div class="movie-item-title-wrapper">
+            <h3 class="movie-item-title">{{ movie.name }}</h3>
+            <div class="movie-item-genres-wrapper">
+              <span
+                v-for="genre in movie.genres"
+                :key="`${movie.id}-${genre}`"
+                class="movie-item-genre-tag"
+                >{{ genre }}</span
+              >
+            </div>
           </div>
-          <div class="bg-white  text-black px-6 py-4 text-xs flex flex-col">
-            <p class="text-2xl">{{ item.name }}</p>
-            <ul class="flex items-center justify-start text-white mt-2">
-              <li v-for="(genre, index) in item.genres" :key="index" class="mr-2">
-                  <span class="rounded-md bg-orange-900 px-2">{{genre}}</span>
-              </li>
-            </ul>
-            <p class="mt-4">{{ item.description }}</p>
-            
-            <p class="mt-4 flex">
-              <span>Rating</span>
-              <span>({{ item.rating }})</span>
+          <div class="movie-item-description-wrapper">
+            <p class="movie-item-description">{{ movie.description }}</p>
+          </div>
+          <div class="movie-item-rating-wrapper">
+            <span class="movie-item-rating-text">
+              Rating: ({{ movie.rating }}/5)
+            </span>
 
+            <span class="movie-item-rating-items">
+              
 
-              <span class="flex ml-2">
-                <StarIcon
-                v-for="star in item.rating"
-                :key="`star-${star}`"
-                class="h-5 w-5 text-yellow-500"
-              />
+              <span class="movie-item-rating-wrapper-default absolute  z-0">
+
+                <button
+                  v-for="star in 5"
+                  :key="star"
+                  class="movie-item-star-icon-button"
+                  :class="[
+                    star <= movie.rating ? 'text-yellow-500' : 'text-gray-500',
+                  ]"
+                  :disabled="star === movie.rating"
+                  @click="ratingUpdate(movieIndex, star)"
+                  >
+
+                  <StarIcon class="movie-item-star-icon" />
+                </button>
+                
               </span>
-             
-            </p>
+            </span>
           </div>
         </div>
-        
-     
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
