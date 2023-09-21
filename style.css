@@ -56,7 +56,11 @@
 }
 
 .movie-item-rating-text {
-    @apply text-xs mr-2 leading-7;
+    @apply text-xs mr-2 leading-5;
+}
+
+.movie-item-rating-items {
+    @apply h-5;
 }
 
 .movie-item-star-icon-wrapper {
@@ -69,4 +73,9 @@
 
 .movie-item-star-icon {
     @apply h-5 w-5;
+}
+
+
+.movie-rating-mark {
+    @apply text-gray-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }

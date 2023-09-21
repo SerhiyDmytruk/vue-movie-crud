@@ -16,6 +16,17 @@ function ratingUpdate(movieIndex, star){
       <div class="movie-item" v-for="(movie, movieIndex) in movies" :key="movie.id">
         <div class="movie-item-image-wrapper">
           <img :src="movie.image" class="movie-item-image" alt="" />
+
+          <div class="absolute top-5 right-5">
+              <StarIcon
+               class="h-10 w-10  "
+               :class="[movie.rating ? 'text-yellow-500' : 'text-gray-500']" />
+
+              <span class="movie-rating-mark">
+                <span v-if="movie.rating">{{ movie.rating }}</span> 
+                <span v-else class="text-yellow-500">-</span>
+              </span>
+          </div>
         </div>
 
         <div class="movie-item-content-wrapper">
