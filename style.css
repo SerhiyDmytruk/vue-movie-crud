@@ -4,15 +4,15 @@
 
 
 .app {
-    @apply max-w-full flex items-center justify-center h-screen mx-auto;
+    @apply max-w-full flex items-center justify-center mx-auto flex-col;
 }
 
 .movie-list {
-    @apply flex items-center justify-center space-x-4;
+    @apply flex items-center justify-start space-x-4 flex-wrap w-[83vw] m-auto;
 }
 
 .movie-item {
-    @apply w-96 h-auto bg-white rounded-md flex flex-col items-center justify-start overflow-hidden shadow-2xl;
+    @apply w-96 h-auto bg-white rounded-md flex flex-col items-center justify-start overflow-hidden shadow-2xl mb-5;
 }
 
 .movie-item-image-wrapper {
@@ -55,7 +55,7 @@
 }
 
 .movie-item-description-wrapper {
-    @apply h-24 overflow-scroll flex-1;
+    @apply h-24 overflow-scroll flex-1 w-full;
 }
 
 .movie-item-description {
@@ -88,4 +88,36 @@
 
 .movie-item-star-icon {
     @apply h-5 w-5;
+}
+
+.movie-add-btn {
+    @apply block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-auto mr-10 mb-2;
+}
+
+.movie-modal {
+    @apply fixed top-0 left-0 bottom-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center;
+}
+
+.movie-add-accept {
+    @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
+}
+
+.movie-add-cancel {
+    @apply text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600;
+}
+
+.form-label {
+    @apply block mb-4;
+}
+
+.form-label span {
+    @apply text-gray-700;
+}
+
+.form-input {
+    @apply mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0;
+}
+
+.form-checkbox {
+    @apply rounded bg-gray-200 border-transparent focus:border-transparent focus:bg-gray-200 text-gray-700 focus:ring-1 focus:ring-offset-2 focus:ring-gray-500 mr-2;
 }
