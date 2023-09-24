@@ -1,139 +1,212 @@
 <script setup>
-import { ref } from "vue";
+import { reactive, ref } from "vue";
+/*
+ This is an Icon that you can use to represent the stars if you like
+ otherwise you could just use a simple ⭐️ emoji, or * character.
+*/
 import { StarIcon } from "@heroicons/vue/24/solid";
 import { items } from "./movies.json";
+
 const movies = ref(items);
 
 function updateRating(movieIndex, rating) {
   movies.value[movieIndex].rating = rating;
 }
 
-const modalTrigger = ref(false);
+const errors = reactive({
+  name: null,
+  description: null,
+  image: null,
+  inTheaters: null,
+  genres: null,
+});
+const form = reactive({
+  name: null,
+  description: null,
+  image: null,
+  inTheaters: false,
+  genres: [],
+});
+const validations = reactive({
+  name: "required",
+  genres: "required",
+});
 
-function updateModalTrigger() {
-  return modalTrigger.value = !modalTrigger.value;
+const genres = reactive([
+  { text: "Drama", value: "Drama" },
+  { text: "Crime", value: "Crime" },
+  { text: "Action", value: "Action" },
+  { text: "Comedy", value: "Comedy" },
+]);
+
+const validationRules = (rule) => {
+  if (rule === "required") return /^ *$/;
+
+  return null;
+};
+
+function validate() {
+  let valid = true;
+  clearErrors();
+  for (const [field, rule] of Object.entries(validations)) {
+    const validation = validationRules(rule);
+    if (validation) {
+      if (validation.test(form[field] || "")) {
+        errors[field] = `${field} is ${rule}`;
+        valid = false;
+      }
+    }
+  }
+
+  return valid;
 }
-let name = ref('');
-let description = ref('');
-let image = ref('');
-let rating = ref(0);
-let genres = ref([]);
-let theater = ref(false);
 
-let newMovie = {
-  'image': image,
-  'name': name,
-  'description': description,
-  'rating': rating,
-  'genres': genres,
-  'theater': theater
+function addMovie() {
+  if (validate()) {
+    const movie = {
+      id: Number(Date.now()),
+      name: form.name,
+      description: form.description,
+      image: form.image,
+      genres: form.genres,
+      inTheaters: form.inTheaters,
+      rating: null,
+    };
+    movies.value.push(movie);
+    hideForm();
+  }
 }
 
-function resetFrom() {
-
-  name = ref('');
-  description = ref('');
-  image = ref('');
-  rating = ref(0);
-  genres = ref([]);
-  theater = ref(false);
-  updateModalTrigger();
+function cleanUpForm() {
+  form.name = null;
+  form.description = null;
+  form.image = null;
+  form.genres = null;
+  form.inTheaters = false;
+  clearErrors();
 }
 
-function onSubmit(e) {
-  console.log(newMovie);
+function clearErrors() {
+  errors.name = null;
+  errors.description = null;
+  errors.image = null;
+  errors.genres = [];
+  errors.inTheaters = null;
+}
 
-  movies.value.push(newMovie);
+const showMovieForm = ref(false);
 
-  resetFrom();
+function hideForm() {
+  showMovieForm.value = false;
+  cleanUpForm();
+}
+
+function showForm() {
+  showMovieForm.value = true;
 }
 </script>
 
 <template>
   <div class="app">
-    <div class="flex relative w-full">
-      <!-- Modal toggle -->
-      <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" 
-              class="movie-add-btn"
-              type="button"
-              @click="updateModalTrigger">
-              Add Movie
-      </button>
-
-      <!-- Main modal -->
-      <div id="defaultModal" tabindex="-1" aria-hidden="true" 
-          class="movie-modal"
-          :class="[modalTrigger ? 'flex': 'hidden']"
-          >
-
-          <div class="absolute top-0 left-0 w-full h-full bg-slate-400/50" @click="updateModalTrigger"></div>
-
-          <div class="relative w-full max-w-2xl max-h-full">
-
-              <!-- Modal content -->
-              <div class="relative bg-white rounded-lg">            
-                  <!-- Modal body -->
-                  <div class="p-6 space-y-6">
-                      <form @submit.prevent="onSubmit" id="form">
-
-                        <label for="name" class="form-label">
-                          <span>Name:</span>
-                          
-                          <input type="text" name="name" id="name" class="form-input" required
-                                v-model="name"/>
-                        </label>
-
-                        <label for="description" class="form-label">
-                          <span>Description:</span>
-                          <textarea name="description" id="description" cols="30" rows="4" class="form-input"
-                                    v-model="description"></textarea>
-                        </label>
-
-                        <label for="image" class="form-label">
-                          <span>Image:</span>
-                          <input type="text" name="image" id="image" class="form-input"
-                                v-model="image"/>
-                        </label>
-
-                        <label for="genres" class="form-label">
-                      
-                          <span>Genres:</span>
-                          <select name="genres" id="genres" multiple  class="form-input" required
-                                  v-model="genres">
-                            <option value="drama">Drama</option>
-                            <option value="action">Action</option>
-                            <option value="crime">Crime</option>
-                            <option value="commedy">Commedy</option>
-                          </select>
-                        </label>
-
-                        <label for="theater" class="inline-flex items-center">
-                          <input type="checkbox" name="theater" id="theater" 
-                              class="form-checkbox" v-model="theater"/>
-                          <span>In Theaters</span>
-                        </label>
-
-
-                        <div class="flex items-center justify-between pt-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-
-                            <button data-modal-hide="defaultModal" 
-                                type="button" 
-                                class="movie-add-cancel"
-                                @click="resetFrom">Cancel</button>
-
-                            <button data-modal-hide="defaultModal" 
-                                type="submit"
-                                class="movie-add-accept">Create</button>
-                        </div>
-
-                      </form>
-                  </div>
-                  <!-- Modal footer -->
-              
-              </div>
+    <div v-if="showMovieForm" class="modal-wrapper">
+      <div class="modal-wrapper-inner">
+        <form @submit.prevent="addMovie">
+          <div class="movie-form-input-wrapper">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              v-model="form.name"
+              class="movie-form-input"
+            />
+            <span class="movie-form-error">{{ errors.name }}</span>
           </div>
-        </div>
+          <div class="movie-form-input-wrapper">
+            <label for="description">Description</label>
+            <textarea
+              type="text"
+              name="description"
+              id="description"
+              v-model="form.description"
+              class="movie-form-textarea"
+            />
+            <span class="movie-form-error">{{ errors.description }}</span>
+          </div>
+          <div class="movie-form-input-wrapper">
+            <label for="image">Image</label>
+            <input
+              type="text"
+              name="image"
+              id="image"
+              v-model="form.image"
+              class="movie-form-input"
+            />
+            <span class="movie-form-error">{{ errors.image }}</span>
+          </div>
+          <div class="movie-form-input-wrapper">
+            <label for="genre">Genres</label>
+            <select
+              name="genre"
+              id="genre"
+              v-model="form.genres"
+              class="movie-form-input"
+              multiple
+            >
+              <option
+                v-for="option in genres"
+                :key="option.value"
+                :value="option.value"
+              >
+                {{ option.text }}
+              </option>
+            </select>
+            <span class="movie-form-error">
+              {{ errors.genres }}
+            </span>
+          </div>
+          <div class="movie-form-input-wrapper">
+            <label for="inTheaters" class="movie-form-checkbox-label">
+              <input
+                type="checkbox"
+                id="inTheaters"
+                v-model="form.inTheaters"
+                :true-value="true"
+                :false-value="false"
+                class="movie-form-checkbox"
+              />
+              <span>In theaters</span>
+            </label>
+            <span class="movie-form-error">
+              {{ errors.inTheaters }}
+            </span>
+          </div>
+          <div class="movie-form-actions-wrapper">
+            <button type="button" class="button" @click="hideForm">
+              Cancel
+            </button>
+
+            <button type="submit" class="button-primary">Create</button>
+          </div>
+        </form>
       </div>
+    </div>
+    <div class="movie-actions-list-wrapper">
+      <div class="flex-spacer"></div>
+      <div class="movie-actions-list-actions">
+        <button
+          class="movie-actions-list-action-button"
+          :class="{
+            'button-primary': !showMovieForm,
+            'button-disabled': showMovieForm,
+          }"
+          @click="showForm"
+          :disabled="showMovieForm"
+        >
+          Add Movie
+        </button>
+      </div>
+    </div>
     <div class="movie-list">
       <div
         class="movie-item"
@@ -160,7 +233,7 @@ function onSubmit(e) {
               </span>
             </div>
           </div>
-          <img :src="movie.image" class="movie-item-image" :alt="movie.name" />
+          <img :src="movie.image" class="movie-item-image" alt="" />
         </div>
 
         <div class="movie-item-content-wrapper">
