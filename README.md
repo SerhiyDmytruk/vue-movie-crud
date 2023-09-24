@@ -5,30 +5,26 @@ chapter: "Chapter 1: Vue.js Essentials"
 tags: vue
 ---
 
-# Code a Create Movie Form
+# Polish your App
 
 # Challenge Description
-In this challenge, let's give users the ability to add new movies in the Movie Rating App. 
+In this challenge, let's polish up the Movie Rating App with a few more features including:
+- The ability to delete movies
+- A display of the average rating.
+- A display of the total number of movies
+- and the ability to edit movies
 
 ## Requirements
-- Create an "Add Movie" button
-- Show a form for creating new movies when the button is clicked
-- Include the following fields on the form:
-  - Name: text input & required
-  - Description: textarea
-  - Image: text input
-  - Genre: dropdown & required & user can select multiple
-  - Is in theaters: checkbox 
-- Validate the form on submit
-- Once submitted and valid, add the movie to the list
-- Clear and hide the form after the movie is added
-- Add a cancel button to the form
-  - Clicking the cancel button should clean up the form, and any error that it might have.
-  - Clicking the cancel button should hide the form for the user.
-
-> 💡 HINT: You can make up any genres you like
-
-> 💡 HINT: You can visit [imdb.com](https://imdb.com) to find movie descriptions, images, etc for testing your form
+- Add a button on each movie allowing users to remove it from the list. 
+- Calculate and display the average rating with a computed prop
+- Add a button to reset all movie ratings to zero.
+- Calculate and display the total number of movies in the list
+- Add the ability to edit each movie
+  - Add an edit button to each movie 
+  - Re-use the "Add Movie" form to edit movies
+  - Pre-fill the form with the data of the movie being edited
+  - On form submit, replace the old movie values with the new
+  - Ensure that the ratings of that movie are not lost when you edit it
 
 ## Other Considerations
 
@@ -39,4 +35,5 @@ In this challenge, let's give users the ability to add new movies in the Movie R
 
 This is an example of what the functionality should look like for the completed exercise. If you’d like to mimic this style, feel free to do so, but it is not required.
 
-![Finished app in this challenge](https://i.imgur.com/EF54nfw.gif)
+![Finished app in this challenge](https://i.imgur.com/FwQdY32.gif)
+

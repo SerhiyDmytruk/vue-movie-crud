@@ -25,7 +25,7 @@ const form = reactive({
   description: null,
   image: null,
   inTheaters: false,
-  genres: [],
+  genres: null,
 });
 const validations = reactive({
   name: "required",
@@ -90,7 +90,7 @@ function clearErrors() {
   errors.name = null;
   errors.description = null;
   errors.image = null;
-  errors.genres = [];
+  errors.genres = null;
   errors.inTheaters = null;
 }
 
@@ -116,7 +116,6 @@ function showForm() {
             <input
               type="text"
               name="name"
-              id="name"
               v-model="form.name"
               class="movie-form-input"
             />
@@ -127,7 +126,6 @@ function showForm() {
             <textarea
               type="text"
               name="description"
-              id="description"
               v-model="form.description"
               class="movie-form-textarea"
             />
@@ -138,7 +136,6 @@ function showForm() {
             <input
               type="text"
               name="image"
-              id="image"
               v-model="form.image"
               class="movie-form-input"
             />
@@ -148,7 +145,6 @@ function showForm() {
             <label for="genre">Genres</label>
             <select
               name="genre"
-              id="genre"
               v-model="form.genres"
               class="movie-form-input"
               multiple
@@ -166,10 +162,9 @@ function showForm() {
             </span>
           </div>
           <div class="movie-form-input-wrapper">
-            <label for="inTheaters" class="movie-form-checkbox-label">
+            <label for="genre" class="movie-form-checkbox-label">
               <input
                 type="checkbox"
-                id="inTheaters"
                 v-model="form.inTheaters"
                 :true-value="true"
                 :false-value="false"
