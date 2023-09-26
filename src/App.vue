@@ -104,6 +104,27 @@ function hideForm() {
 function showForm() {
   showMovieForm.value = true;
 }
+
+function moviesCalculation() {
+
+  let ratingSumm = 0;
+
+  for (const data of movies.value) {
+    ratingSumm += data.rating
+  }
+
+  return {
+    count: movies.value.length,
+    average: (ratingSumm/movies.value.length).toFixed(2)
+  }
+}
+
+function clearMoviesRating(){
+  for (const data of movies.value) {
+    data.rating = 0;
+  }
+}
+
 </script>
 
 <template>
@@ -187,8 +208,21 @@ function showForm() {
       </div>
     </div>
     <div class="movie-actions-list-wrapper">
-      <div class="flex-spacer"></div>
-      <div class="movie-actions-list-actions">
+      <div class="flex-spacer">
+
+        <div class="flex">
+          <div>Total Movies: <span>{{ moviesCalculation().count }}</span></div> /
+          <div>Average Rating: <span>{{ moviesCalculation().average }}</span></div>
+        </div>
+      </div>
+      <div class="movie-actions-list-actions ">
+
+        <button
+          class="movie-actions-list-action-button button-primary"
+          @click="clearMoviesRating">
+          Remove ratings
+        </button>
+
         <button
           class="movie-actions-list-action-button"
           :class="{
