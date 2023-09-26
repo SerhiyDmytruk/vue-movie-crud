@@ -4,7 +4,7 @@ import { reactive, ref } from "vue";
  This is an Icon that you can use to represent the stars if you like
  otherwise you could just use a simple ⭐️ emoji, or * character.
 */
-import { StarIcon } from "@heroicons/vue/24/solid";
+import { StarIcon, TrashIcon, PencilIcon } from "@heroicons/vue/24/solid";
 import { items } from "./movies.json";
 
 const movies = ref(items);
@@ -122,6 +122,13 @@ function moviesCalculation() {
 function clearMoviesRating(){
   for (const data of movies.value) {
     data.rating = 0;
+  }
+}
+
+function removeMovie(movieIndex) {
+
+  for(let i = 0; i < movies.value.length; i++) {
+    if(movies.value[i].id === movieIndex) movies.value.splice(i, 1);
   }
 }
 
@@ -298,6 +305,19 @@ function clearMoviesRating(){
               >
                 <StarIcon class="movie-item-star-icon" />
               </button>
+
+              <div class="flex-spacer flex justify-end">
+                <button type="button" 
+                        class="p-1 shadow-sm bg-purple-500 w-8 h-8 rounded-full">
+                    <PencilIcon class="text-white" />
+                </button>
+
+                <button type="button" 
+                        class="p-1 shadow-sm bg-purple-500 w-8 h-8 rounded-full"
+                        @click="removeMovie(movie.id)">
+                  <TrashIcon class="text-white" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
