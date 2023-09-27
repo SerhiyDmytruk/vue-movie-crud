@@ -1,8 +1,7 @@
 <script setup>
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 /*
- This is an Icon that you can use to represent the stars if you like
- otherwise you could just use a simple ⭐️ emoji, or * character.
+These are Icons that you can use, of course you can use other ones if you prefer.
 */
 import { StarIcon, TrashIcon, PencilIcon } from "@heroicons/vue/24/solid";
 import { items } from "./movies.json";
@@ -11,6 +10,21 @@ const movies = ref(items);
 
 function updateRating(movieIndex, rating) {
   movies.value[movieIndex].rating = rating;
+}
+function removeMovie(movieIndex) {
+  movies.value = movies.value.filter((movie, index) => index !== movieIndex);
+}
+function editMovie(movieIndex) {
+  const movie = movies.value[movieIndex];
+
+  form.id = movie.id;
+  form.name = movie.name;
+  form.description = movie.description;
+  form.image = movie.image;
+  form.inTheaters = movie.inTheaters;
+  form.genres = movie.genres;
+
+  showForm();
 }
 
 const errors = reactive({
@@ -62,26 +76,48 @@ function validate() {
   return valid;
 }
 
-function addMovie() {
+function saveMovie() {
+  if (form.id) {
+    updateMovie();
+  } else {
+    addMovie();
+  }
+}
+
+function updateMovie() {
   if (validate()) {
-
-    let id = Number(Date.now());
-
-      if(form.id !== undefined) {
-        id = form.id
-      }
-
-      console.log(id);
-
-
     const movie = {
-      id: id,
+      id: form.id,
       name: form.name,
       description: form.description,
       image: form.image,
       genres: form.genres,
       inTheaters: form.inTheaters,
-      rating: null,
+      rating: 0,
+    };
+
+    movies.value = movies.value.map((m) => {
+      if (m.id === movie.id) {
+        movie.rating = m.rating;
+        return movie;
+      }
+      return m;
+    });
+
+    hideForm();
+  }
+}
+
+function addMovie() {
+  if (validate()) {
+    const movie = {
+      id: Number(Date.now()),
+      name: form.name,
+      description: form.description,
+      image: form.image,
+      genres: form.genres,
+      inTheaters: form.inTheaters,
+      rating: 0,
     };
     movies.value.push(movie);
     hideForm();
@@ -106,7 +142,6 @@ function clearErrors() {
 }
 
 const showMovieForm = ref(false);
-
 function hideForm() {
   showMovieForm.value = false;
   cleanUpForm();
@@ -114,62 +149,33 @@ function hideForm() {
 
 function showForm() {
   showMovieForm.value = true;
-
-  console.log(arguments[0]);
-
-  if(arguments[0] !== undefined) {
-    let movieObj = {};
-    let movieIndex = arguments[0];
-
-    for(let i = 0; i < movies.value.length; i++) {
-      if(movies.value[i].id === movieIndex) {
-        console.log(movies.value[i], movieIndex);
-        movieObj = {...movies.value[i]};
-      }
-    }
-
-    form.name = movieObj.name;
-    form.description = movieObj.description;
-    form.image = movieObj.image;
-    form.genres = movieObj.genres;
-    form.inTheaters = movieObj.inTheaters;
-  }
 }
 
-function moviesCalculation() {
+const averageRating = computed(() => {
+  const avg = movies.value
+    .map((movie) => parseInt(movie.rating || 0))
+    .reduce((a, b) => a + b, 0);
 
-  let ratingSumm = 0;
+  return Number(avg / movies.value.length).toFixed(1);
+});
 
-  for (const data of movies.value) {
-    ratingSumm += data.rating
-  }
+const totalMovies = computed(() => {
+  return movies.value.length;
+});
 
-  return {
-    count: movies.value.length,
-    average: (ratingSumm/movies.value.length).toFixed(2)
-  }
+function removeRatings() {
+  movies.value = movies.value.map((movie) => {
+    movie.rating = 0;
+    return movie;
+  });
 }
-
-function clearMoviesRating(){
-  for (const data of movies.value) {
-    data.rating = 0;
-  }
-}
-
-function removeMovie(movieIndex) {
-
-  for(let i = 0; i < movies.value.length; i++) {
-    if(movies.value[i].id === movieIndex) movies.value.splice(i, 1);
-  }
-}
-
 </script>
 
 <template>
   <div class="app">
     <div v-if="showMovieForm" class="modal-wrapper">
       <div class="modal-wrapper-inner">
-        <form @submit.prevent="addMovie">
+        <form @submit.prevent="saveMovie">
           <div class="movie-form-input-wrapper">
             <label for="name">Name</label>
             <input
@@ -240,27 +246,28 @@ function removeMovie(movieIndex) {
               Cancel
             </button>
 
-            <button type="submit" class="button-primary">Create</button>
+            <button type="submit" class="button-primary">
+              <span v-if="form.id">Update</span>
+              <span v-else>Create</span>
+            </button>
           </div>
         </form>
       </div>
     </div>
     <div class="movie-actions-list-wrapper">
-      <div class="flex-spacer">
-
-        <div class="flex">
-          <div>Total Movies: <span>{{ moviesCalculation().count }}</span></div> /
-          <div>Average Rating: <span>{{ moviesCalculation().average }}</span></div>
-        </div>
+      <div class="movie-actions-list-info">
+        <span>Total Movies: {{ totalMovies }}</span>
+        <span> / </span>
+        <span>Average Rating: {{ averageRating }}</span>
       </div>
-      <div class="movie-actions-list-actions ">
-
+      <div class="flex-spacer"></div>
+      <div class="movie-actions-list-actions">
         <button
-          class="movie-actions-list-action-button button-primary"
-          @click="clearMoviesRating">
-          Remove ratings
+          class="self-end movie-actions-list-action-button button-primary justify-self-end"
+          @click="removeRatings"
+        >
+          Remove Ratings
         </button>
-
         <button
           class="movie-actions-list-action-button"
           :class="{
@@ -276,7 +283,7 @@ function removeMovie(movieIndex) {
     </div>
     <div class="movie-list">
       <div
-        class="movie-item"
+        class="movie-item group"
         v-for="(movie, movieIndex) in movies"
         :key="movie.id"
       >
@@ -322,7 +329,6 @@ function removeMovie(movieIndex) {
             <span class="movie-item-rating-text">
               Rating: ({{ movie.rating }}/5)
             </span>
-
             <div class="movie-item-star-icon-wrapper">
               <button
                 v-for="star in 5"
@@ -336,20 +342,21 @@ function removeMovie(movieIndex) {
               >
                 <StarIcon class="movie-item-star-icon" />
               </button>
+            </div>
 
-              <div class="flex-spacer flex justify-end">
-                <button type="button" 
-                        class="p-1 shadow-sm bg-purple-500 w-8 h-8 rounded-full"
-                        @click="showForm(movie.id)">
-                    <PencilIcon class="text-white" />
-                </button>
-
-                <button type="button" 
-                        class="p-1 shadow-sm bg-purple-500 w-8 h-8 rounded-full"
-                        @click="removeMovie(movie.id)">
-                  <TrashIcon class="text-white" />
-                </button>
-              </div>
+            <div class="movie-item-actions-list-wrapper">
+              <button
+                class="movie-item-action-edit-button"
+                @click="editMovie(movieIndex)"
+              >
+                <PencilIcon class="w-4 h-4" />
+              </button>
+              <button
+                class="movie-item-action-remove-button"
+                @click="removeMovie(movieIndex)"
+              >
+                <TrashIcon class="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>

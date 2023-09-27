@@ -59,6 +59,10 @@
     @apply flex items-center justify-between w-full max-w-7xl px-8;
 }
 
+.movie-actions-list-info {
+    @apply flex items-center justify-center space-x-8 text-white text-xl;
+}
+
 .movie-actions-list-actions {
     @apply flex items-center justify-between space-x-8;
 }
@@ -149,6 +153,19 @@
 
 .movie-item-star-icon {
     @apply h-5 w-5;
+}
+
+
+.movie-item-actions-list-wrapper {
+    @apply group-hover:flex shrink-0 hidden items-center justify-end space-x-2;
+}
+
+.movie-item-action-edit-button {
+    @apply rounded-full bg-gray-200 p-3 text-gray-800 hover:text-white hover:bg-indigo-500;
+}
+
+.movie-item-action-remove-button {
+    @apply rounded-full bg-gray-200 p-3 text-gray-800 hover:text-white hover:bg-red-500;
 }
 
 .flex-spacer {
