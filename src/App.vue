@@ -21,6 +21,7 @@ const errors = reactive({
   genres: null,
 });
 const form = reactive({
+  id: null,
   name: null,
   description: null,
   image: null,
@@ -63,8 +64,18 @@ function validate() {
 
 function addMovie() {
   if (validate()) {
+
+    let id = Number(Date.now());
+
+      if(form.id !== undefined) {
+        id = form.id
+      }
+
+      console.log(id);
+
+
     const movie = {
-      id: Number(Date.now()),
+      id: id,
       name: form.name,
       description: form.description,
       image: form.image,
@@ -103,6 +114,26 @@ function hideForm() {
 
 function showForm() {
   showMovieForm.value = true;
+
+  console.log(arguments[0]);
+
+  if(arguments[0] !== undefined) {
+    let movieObj = {};
+    let movieIndex = arguments[0];
+
+    for(let i = 0; i < movies.value.length; i++) {
+      if(movies.value[i].id === movieIndex) {
+        console.log(movies.value[i], movieIndex);
+        movieObj = {...movies.value[i]};
+      }
+    }
+
+    form.name = movieObj.name;
+    form.description = movieObj.description;
+    form.image = movieObj.image;
+    form.genres = movieObj.genres;
+    form.inTheaters = movieObj.inTheaters;
+  }
 }
 
 function moviesCalculation() {
@@ -308,7 +339,8 @@ function removeMovie(movieIndex) {
 
               <div class="flex-spacer flex justify-end">
                 <button type="button" 
-                        class="p-1 shadow-sm bg-purple-500 w-8 h-8 rounded-full">
+                        class="p-1 shadow-sm bg-purple-500 w-8 h-8 rounded-full"
+                        @click="showForm(movie.id)">
                     <PencilIcon class="text-white" />
                 </button>
 
