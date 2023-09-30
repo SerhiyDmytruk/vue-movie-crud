@@ -5,35 +5,35 @@ chapter: "Chapter 2: Vue.js Components"
 tags: vue
 ---
 
-# Extract Components
+# Reusable Modal Component
 
 # Challenge Description
 
-So far, so good. 💪 In this challenge, let's extract some parts of our app into components.
-This is good for keeping the code clean and organized code and allows us to abstract logic for reuse.
+In this challenge, let's create a re-usable `AppModal` component and use it to display the movie form.
+Later on we'll improve this component to keep up with it's own display state .
 
 ## Requirements
 
-- Move the current template for a movie into the `MovieItem.vue` component.
-- Replace the current part of our template where the movie is displayed with the `MovieItem.vue` component
-- Move the `notRated` value into the `MovieItem.vue` component, create a computed property out of it.
-- The `MovieItem.vue` component should have the following props:
-  - `movie`: It should receive the movie object.
-- Create `3` custom events in the `MovieItem.vue` component.
-  - `edit`: Should be dispatched when the user clicks the `edit` button with the `id` as parameter
-  - `remove`: Should be dispatched when the user clicks the `remove` button with the `id` as parameter
-  - `update:rating`: Should be dispatched when the user updates the rating with the `id` and the new `rating` as parameter
-- Change the behavior of the `updateRating` to accept the movie `id` instead of the `movieIndex`
-- Change the behavior of the `removeMovie` to accept the movie `id` instead of the `movieIndex`
-- Change the behavior of the `editMovie` to accept the movie `id` instead of the `movieIndex`
+- Move the current template for the modal into the `AppModal.vue` component and modify it for general re-use.
+- The `AppModal.vue` component should meet the following specs:
+  - Include a `slot` for the body content
+  - Display a close (x) button
+  - Display a title above the body content
+  - Receive the following props:
+    - `title`: a string for the title, defaults to `null`.
+  - Emit the following events:
+    - `close`: emitted when component is closed
+- Use the `AppModal.vue` component to display the `MovieForm` in `App.vue`
+- Import the `AppModal.vue` and `MovieForm.vue` component asynchronously so that the components' code is only downloaded once it's displayed
+- The rest of the app should continue to work as before
 
 ## Other Considerations
 
 - If you see the `data-test` attribute anywhere in the boilerplate don't remove it.
 - TailwindCSS is preinstalled with the default config. It might be helpful for you, if you want to have some styles. (Not obligatory)
 
-## Example of Finished App
+## Example of finished App
 
 This is an example of what the functionality should look like for the completed exercise. If you’d like to mimic this style, feel free to do so, but it is not required.
 
-![Finished app in this challenge](https://i.imgur.com/FwQdY32.gif)
+![Finished app in this challenge](https://i.imgur.com/zCoJOG3.gif)

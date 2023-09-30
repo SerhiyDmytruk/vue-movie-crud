@@ -1,11 +1,9 @@
-- The current template for a movie is moved into the `MovieItem.vue` component.
-- The current part of the template in `App.vue` where we were looping through the movies is changed, and now it uses the `MovieItem.vue` component.
-- The `notRated` value is on the `MovieItem.vue` component, as a computed property.
-- The `MovieItem.vue` component accepts the `movie` as prop.
-- The `MovieItem.vue` component dispatches a `edit` event with the movie `id` as param.
-- The `MovieItem.vue` component dispatches a `remove` event with the movie `id` as param.
-- The `MovieItem.vue` component dispatches a `update:rating` event with the movie `id` and the new `rating` as params.
-- The behavior of the `updateRating` is changed to accept the movie `id` instead of the `movieIndex` .
-- The behavior of the `removeMovie` is changed to accept the movie `id` instead of the `movieIndex` .
-- The behavior of the `editMovie` is changed to accept the movie `id` instead of the `movieIndex` .
+- The modal markup from `App.vue` is moved into the `AppModal` component.
+- The `AppModal` component is used to display the `MovieForm` in `App.vue`
+- The `AppModal` component has a default slot
+- The `AppModal` component includes an `x` button to close it.
+- The `AppModal` component dispatches a `close` event.
+- The `AppModal` component accepts the `title` as prop, and it's defined as string.
+- The `AppModal` component displays the `title` above the slot if provided.
+- The `MovieForm.vue` is loaded asynchronously.
 - The rest of our application still works as expected.

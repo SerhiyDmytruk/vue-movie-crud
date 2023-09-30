@@ -7,6 +7,7 @@ import { PencilIcon, StarIcon, TrashIcon } from "@heroicons/vue/24/solid";
 
 const props = defineProps({
   movie: { type: Object, default: null },
+  index: { type: Number, default: null },
 });
 
 const emit = defineEmits(["edit", "remove", "update:rating"]);
@@ -60,7 +61,7 @@ function editMovie() {
         :alt="movie.name"
       />
       <span v-else class="movie-item-no-image">
-        <span class="text-4xl text-white">No image</span>
+        <span class="text-white text-4xl">No image</span>
       </span>
     </div>
 
@@ -99,7 +100,7 @@ function editMovie() {
         </div>
 
         <div
-          class="items-center justify-end hidden space-x-2 group-hover:flex shrink-0"
+          class="group-hover:flex shrink-0 hidden items-center justify-end space-x-2"
         >
           <div class="movie-item-actions-list-wrapper">
             <button class="movie-item-action-edit-button" @click="editMovie()">

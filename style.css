@@ -11,8 +11,20 @@
     @apply absolute inset-0 flex items-center justify-center z-20 bg-gray-800/40 backdrop-blur;
 }
 
+.modal-close-button {
+    @apply absolute -right-12 -top-2 text-gray-300 p-2 hover:text-white
+}
+
+.modal-title {
+    @apply w-full bg-gray-900 p-4 rounded-t-md text-2xl
+}
+
 .modal-wrapper-inner {
-    @apply shrink-0 w-full max-w-2xl rounded-md flex flex-col overflow-hidden shadow-2xl bg-white dark:bg-gray-800 p-4 space-y-4 dark:text-white;
+    @apply relative shrink-0 w-full max-w-2xl rounded-md flex flex-col shadow-2xl bg-white dark:bg-gray-800 dark:text-white;
+}
+
+.modal-inner {
+    @apply p-4 space-y-4
 }
 
 .movie-form-input-wrapper {
@@ -85,6 +97,10 @@
 
 .movie-item-image {
     @apply object-cover object-center h-[600px];
+}
+
+.movie-item-no-image {
+    @apply h-[520px] absolute z-0 inset-0 w-full bg-gray-500 flex items-center justify-center;
 }
 
 .movie-item-star-wrapper {
