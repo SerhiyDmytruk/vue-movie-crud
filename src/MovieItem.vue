@@ -1,36 +1,35 @@
 <script setup>
 import { computed } from "vue";
-
-import { StarIcon, TrashIcon, PencilIcon } from "@heroicons/vue/24/solid";
+/*
+These are Icons that you can use, of course you can use other ones if you prefer.
+*/
+import { PencilIcon, StarIcon, TrashIcon } from "@heroicons/vue/24/solid";
 
 const props = defineProps({
-  movie: { type: Object, default: null }
-})
+  movie: { type: Object, default: null },
+});
 
-const emit = defineEmits(["edit", "remove", "update:rating"])
+const emit = defineEmits(["edit", "remove", "update:rating"]);
 
 const notRated = computed(() => {
-  return Boolean(!props.movie?.rating)
-})
+  return Boolean(!props.movie?.rating);
+});
 
 function updateRating(rating) {
-  emit('update:rating', props.movie.id , rating)
-}
-
-function editMovie() {
-  emit('edit', props.movie.id);
+  emit("update:rating", props.movie.id, rating);
 }
 
 function removeMovie() {
-  emit('remove', props.movie.id);
+  emit("remove", props.movie.id);
 }
 
+function editMovie() {
+  emit("edit", props.movie.id);
+}
 </script>
 
 <template>
-  <div
-    class="movie-item group"
-  >
+  <div class="movie-item group">
     <div class="movie-item-image-wrapper">
       <div class="movie-item-star-wrapper">
         <StarIcon
@@ -38,7 +37,7 @@ function removeMovie() {
           class="movie-item-star-rating-icon"
           :class="{
             'text-yellow-500': !notRated,
-            'text-gray-500': notRated
+            'text-gray-500': notRated,
           }"
         />
         <div class="movie-item-star-content-wrapper">
@@ -54,7 +53,15 @@ function removeMovie() {
           </span>
         </div>
       </div>
-      <img :src="movie.image" class="movie-item-image" alt="" />
+      <img
+        v-if="movie?.image"
+        :src="movie.image"
+        class="movie-item-image"
+        :alt="movie.name"
+      />
+      <span v-else class="movie-item-no-image">
+        <span class="text-4xl text-white">No image</span>
+      </span>
     </div>
 
     <div class="movie-item-content-wrapper">
@@ -91,19 +98,20 @@ function removeMovie() {
           </button>
         </div>
 
-        <div class="movie-item-actions-list-wrapper">
-          <button
-            class="movie-item-action-edit-button"
-            @click="editMovie()"
-          >
-            <PencilIcon class="w-4 h-4" />
-          </button>
-          <button
-            class="movie-item-action-remove-button"
-            @click="removeMovie()"
-          >
-            <TrashIcon class="w-4 h-4" />
-          </button>
+        <div
+          class="items-center justify-end hidden space-x-2 group-hover:flex shrink-0"
+        >
+          <div class="movie-item-actions-list-wrapper">
+            <button class="movie-item-action-edit-button" @click="editMovie()">
+              <PencilIcon class="w-4 h-4" />
+            </button>
+            <button
+              class="movie-item-action-remove-button"
+              @click="removeMovie()"
+            >
+              <TrashIcon class="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

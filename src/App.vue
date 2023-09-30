@@ -1,22 +1,25 @@
 <script setup>
 import { computed, reactive, ref } from "vue";
-/*
-These are Icons that you can use, of course you can use other ones if you prefer.
-*/
-import { StarIcon, TrashIcon, PencilIcon } from "@heroicons/vue/24/solid";
+import MovieItem from "@/MovieItem.vue";
 import { items } from "./movies.json";
-import { MovieItem } from "@/MovieItem.vue";
 
 const movies = ref(items);
 
-function updateRating(movieIndex, rating) {
-  movies.value[movieIndex].rating = rating;
+function updateRating(id, rating) {
+  movies.value = movies.value.map((movie) => {
+    if (movie.id === id) {
+      movie.rating = rating;
+    }
+    return movie;
+  });
 }
-function removeMovie(movieIndex) {
-  movies.value = movies.value.filter((movie, index) => index !== movieIndex);
+
+function removeMovie(id) {
+  movies.value = movies.value.filter((movie) => movie.id !== id);
 }
-function editMovie(movieIndex) {
-  const movie = movies.value[movieIndex];
+
+function editMovie(id) {
+  const movie = movies.value.find((movie) => movie.id === id);
 
   form.id = movie.id;
   form.name = movie.name;
@@ -94,7 +97,7 @@ function updateMovie() {
       image: form.image,
       genres: form.genres,
       inTheaters: form.inTheaters,
-      rating: 0,
+      rating: null,
     };
 
     movies.value = movies.value.map((m) => {
@@ -118,7 +121,7 @@ function addMovie() {
       image: form.image,
       genres: form.genres,
       inTheaters: form.inTheaters,
-      rating: 0,
+      rating: null,
     };
     movies.value.push(movie);
     hideForm();
@@ -143,6 +146,7 @@ function clearErrors() {
 }
 
 const showMovieForm = ref(false);
+
 function hideForm() {
   showMovieForm.value = false;
   cleanUpForm();
@@ -166,7 +170,7 @@ const totalMovies = computed(() => {
 
 function removeRatings() {
   movies.value = movies.value.map((movie) => {
-    movie.rating = 0;
+    movie.rating = null;
     return movie;
   });
 }
@@ -177,6 +181,7 @@ function removeRatings() {
     <div v-if="showMovieForm" class="modal-wrapper">
       <div class="modal-wrapper-inner">
         <form @submit.prevent="saveMovie">
+          <input type="hidden" name="id" v-model="form.id" />
           <div class="movie-form-input-wrapper">
             <label for="name">Name</label>
             <input
@@ -282,15 +287,14 @@ function removeRatings() {
         </button>
       </div>
     </div>
-
     <div class="movie-list">
-      <MovieItem 
-          v-for="movie in movies"
-          :key="movie.id"
-          :movie="movie"
-          @edit="editMovie"
-          @remove="removeMovie"
-          @update:rating="updateRating"
+      <MovieItem
+        v-for="movie in movies"
+        :key="movie.id"
+        :movie="movie"
+        @edit="editMovie"
+        @remove="removeMovie"
+        @update:rating="updateRating"
       />
     </div>
   </div>
