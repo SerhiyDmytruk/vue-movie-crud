@@ -1,17 +1,11 @@
-- A button for deleting a movie is present on each movie.
-- When you click the delete button, that movie is removed from the list.
-- A button for editing a movie is present on each movie.
-- When you click the edit button, that form shows up.
-- The form is prefilled with the movie data.
-- The form submit buttons text is `Save` when you edit.
-- The form validates the correct data.
-- The form is cleared out and hidden after saving a valid movie. 
-- Is the movie is updated on the list once the form is submitted and valid.
-- Clicking the cancel button hides the form.
-- Clicking the cancel button clears the form.
-- Clicking the cancel button clears all errors.
-- Clicking the cancel button does not update the movie.
-- An average rate of the movies is shown on screen.
-- The total amount of the movies is shown on screen.
-- There is a button present to clear out all the ratings.
-- Pressing that button removes the rate of each movie.
+- The current template for a movie is moved into the `MovieItem.vue` component.
+- The current part of the template in `App.vue` where we were looping through the movies is changed, and now it uses the `MovieItem.vue` component.
+- The `notRated` value is on the `MovieItem.vue` component, as a computed property.
+- The `MovieItem.vue` component accepts the `movie` as prop.
+- The `MovieItem.vue` component dispatches a `edit` event with the movie `id` as param.
+- The `MovieItem.vue` component dispatches a `remove` event with the movie `id` as param.
+- The `MovieItem.vue` component dispatches a `update:rating` event with the movie `id` and the new `rating` as params.
+- The behavior of the `updateRating` is changed to accept the movie `id` instead of the `movieIndex` .
+- The behavior of the `removeMovie` is changed to accept the movie `id` instead of the `movieIndex` .
+- The behavior of the `editMovie` is changed to accept the movie `id` instead of the `movieIndex` .
+- The rest of our application still works as expected.
