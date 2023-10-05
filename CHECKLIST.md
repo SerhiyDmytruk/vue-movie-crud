@@ -1,9 +1,3 @@
-- The modal markup from `App.vue` is moved into the `AppModal` component.
-- The `AppModal` component is used to display the `MovieForm` in `App.vue`
-- The `AppModal` component has a default slot
-- The `AppModal` component includes an `x` button to close it.
-- The `AppModal` component dispatches a `close` event.
-- The `AppModal` component accepts the `title` as prop, and it's defined as string.
-- The `AppModal` component displays the `title` above the slot if provided.
-- The `MovieForm.vue` is loaded asynchronously.
-- The rest of our application still works as expected.
+- The modal overlay appears with a nice transition
+- The overlay (dark background) fades in
+- The modal itself slides in

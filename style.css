@@ -8,7 +8,7 @@
 }
 
 .modal-wrapper {
-    @apply absolute inset-0 flex items-center justify-center z-20 bg-gray-800/40 backdrop-blur;
+    @apply absolute inset-0 flex items-center justify-center z-20 bg-gray-800/40 backdrop-blur w-full;
 }
 
 .modal-close-button {
@@ -16,7 +16,7 @@
 }
 
 .modal-title {
-    @apply w-full bg-gray-900 p-4 rounded-t-md text-2xl
+    @apply w-full p-4 rounded-t-md text-2xl
 }
 
 .modal-wrapper-inner {
@@ -170,7 +170,6 @@
 .movie-item-star-icon {
     @apply h-5 w-5;
 }
-
 
 .movie-item-actions-list-wrapper {
     @apply group-hover:flex shrink-0 hidden items-center justify-end space-x-2;

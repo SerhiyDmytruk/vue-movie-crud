@@ -1,10 +1,10 @@
 <script setup>
 import MovieItem from "@/MovieItem.vue";
+import AppModal from "./AppModal.vue";
 import { items } from "./movies.json";
 import { computed, ref, defineAsyncComponent } from "vue";
 
 // async components
-const AppModal = defineAsyncComponent(() => import("@/AppModal.vue"));
 const MovieForm = defineAsyncComponent(() => import("@/MovieForm.vue"));
 
 const movies = ref(items);
@@ -75,18 +75,20 @@ function removeRatings() {
 
 <template>
   <div class="app">
-    <AppModal
-      v-if="showMovieForm"
-      :title="currentMovie?.id ? 'Edit Movie' : 'Add Movie'"
-      @close="hideForm()"
-    >
-      <MovieForm
-        v-if="showMovieForm"
-        @update:modelValue="saveMovie"
-        :modelValue="currentMovie"
-        @cancel="hideForm"
-      />
-    </AppModal>
+    <Transition name="fade">
+      <AppModal
+        :show="showMovieForm"
+        :title="currentMovie?.id ? 'Edit Movie' : 'Add Movie'"
+        @close="hideForm()"
+      >
+        <MovieForm
+          v-if="showMovieForm"
+          @update:modelValue="saveMovie"
+          :modelValue="currentMovie"
+          @cancel="hideForm"
+        />
+      </AppModal>
+    </Transition>
     <div class="movie-actions-list-wrapper">
       <div class="movie-actions-list-info">
         <span>Total Movies: {{ totalMovies }}</span>
