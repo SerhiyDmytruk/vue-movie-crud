@@ -9,34 +9,38 @@ defineEmits(["close"]);
 </script>
 
 <template>
-  <div class="modal-wrapper" v-if="show">
-    <div class="modal-wrapper-inner">
-      <button class="modal-close-button" @click="$emit('close')">
-        <XMarkIcon class="w-8 h-8" />
-      </button>
-      <h3 class="modal-title" v-if="title">{{ title }}</h3>
-      <div class="modal-inner">
-        <slot />
+  <div>
+    <Transition>
+      <div v-if="show" class="modal-wrapper">
+        <div class="modal-wrapper-inner">
+          <button class="modal-close-button" @click="$emit('close')">
+            <XMarkIcon class="w-8 h-8" />
+          </button>
+          <h3 class="modal-title" v-if="title">{{ title }}</h3>
+          <div class="modal-inner">
+            <slot />
+          </div>
+        </div>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active,
-.fade-enter-active .modal-wrapper-inner,
-.fade-leave-active .modal-wrapper-inner {
+.v-enter-active,
+.v-leave-active,
+.v-enter-active .modal-wrapper-inner,
+.v-leave-active .modal-wrapper-inner {
   transition: all 0.5s ease;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.v-enter-from,
+.v-leave-to {
   opacity: 0;
 }
 
-.fase-enter-from .modal-wrapper-inner,
-.fase-leave-to .modal-wrapper-inner {
+.v-enter-from .modal-wrapper-inner,
+.v-leave-to .modal-wrapper-inner {
   transform: translateY(-50px);
 }
 </style>

@@ -8,7 +8,7 @@
 }
 
 .modal-wrapper {
-    @apply absolute inset-0 flex items-center justify-center z-20 bg-gray-800/40 backdrop-blur w-full;
+    @apply absolute inset-0 flex items-center justify-center z-20 bg-gray-800/40 backdrop-blur;
 }
 
 .modal-close-button {
@@ -16,7 +16,7 @@
 }
 
 .modal-title {
-    @apply w-full p-4 rounded-t-md text-2xl
+    @apply w-full bg-gray-900 p-4 rounded-t-md text-2xl text-white
 }
 
 .modal-wrapper-inner {

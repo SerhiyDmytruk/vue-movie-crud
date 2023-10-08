@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 
 const emit = defineEmits(["update:modelValue", "cancel"]);
 const props = defineProps({
@@ -94,11 +94,8 @@ function clearErrors() {
   errors.inTheaters = null;
 }
 
-const active = ref(null);
-
-onMounted(()=> {
-  active.value.focus();
-})
+const nameInput = ref();
+onMounted(() => nameInput.value.focus());
 </script>
 
 <template>
@@ -107,10 +104,10 @@ onMounted(()=> {
     <div class="movie-form-input-wrapper">
       <label for="name">Name</label>
       <input
+        ref="nameInput"
         type="text"
         name="name"
         v-model="form.name"
-        ref="active"
         class="movie-form-input"
       />
       <span class="movie-form-error">{{ errors.name }}</span>
@@ -171,7 +168,7 @@ onMounted(()=> {
       </span>
     </div>
     <div class="movie-form-actions-wrapper">
-      <button type="button" class="button" @click="cancelForm">Cancel</button>
+      <button type="button" class="button text-white" @click="cancelForm">Cancel</button>
 
       <button type="submit" class="button-primary">
         <span v-if="form.id">Save</span>
